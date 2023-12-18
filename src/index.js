@@ -43,6 +43,7 @@ function handleSubmit(event) {
   }
   search = event.target.searchQuery.value.toLowerCase();
   render(search);
+  event.currentTarget.reset();
 }
 
 async function render(search) {
