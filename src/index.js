@@ -21,13 +21,13 @@ async function onLoadMore() {
   try {
     const data = await serviceGallery(page, search);
     const lastPage = Math.ceil(data.totalHits / perPage);
-    if (page + 1 === lastPage) {
+    if (page === lastPage) {
       selectors.loadMore.style.display = 'none';
       Notify.warning(
         "We're sorry, but you've reached the end of search results."
       );
     }
-    if (page < lastPage) {
+    if (page <= lastPage) {
       selectors.list.insertAdjacentHTML('beforeend', createMarkup(data.hits));
     }
   } catch (error) {
