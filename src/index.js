@@ -1,5 +1,7 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { serviceGallery } from './gallery';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const selectors = {
   form: document.querySelector('.search-form'),
@@ -15,6 +17,11 @@ selectors.form.addEventListener('submit', handleSubmit);
 
 selectors.loadMore.addEventListener('click', onLoadMore);
 
+let lightBox = new SimpleLightbox('.photo-card a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 async function onLoadMore() {
   page++;
   console.log(page);
@@ -29,6 +36,7 @@ async function onLoadMore() {
     }
     if (page <= lastPage) {
       selectors.list.insertAdjacentHTML('beforeend', createMarkup(data.hits));
+      lightBox.refresh();
     }
   } catch (error) {
     console.log(error);
@@ -58,10 +66,14 @@ async function render(search) {
       );
     }
     if (page < lastPage) {
+      Notify.success(`Hooray! We found ${data.totalHits} images.`);
       selectors.list.innerHTML = createMarkup(data.hits);
       selectors.loadMore.style.display = '';
+      lightBox.refresh();
     } else {
+      Notify.success(`Hooray! We found ${data.totalHits} images.`);
       selectors.list.innerHTML = createMarkup(data.hits);
+      lightBox.refresh();
     }
   } catch (error) {
     console.log(error);
@@ -80,7 +92,7 @@ function createMarkup(arr) {
         comments,
         downloads,
       }) => `<div class="photo-card">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy" width="100%" height="340"/>
+  <a href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy" width="100%" height="340"/></a>
   <div class="info">
     <p class="info-item">
       <b>Likes: ${likes}</b>

@@ -49,6 +49,7 @@ body {
   background-color: wheat;
   border-radius: 10px;
   width: 470px;
+  transition: transform 200ms ease-in-out;
 }
 
 .photo-card img {
@@ -71,4 +72,8 @@ body {
 
 .load-more:hover {
   border: none;
+}
+
+.photo-card:hover {
+  transform: scale(1.05);
 }
